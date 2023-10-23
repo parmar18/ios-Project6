@@ -14,7 +14,7 @@ class ViewController: UIViewController, UITableViewDataSource {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.title = "Blog Posts"
         tableView.dataSource = self
         fetchPosts()
 
@@ -78,4 +78,26 @@ class ViewController: UIViewController, UITableViewDataSource {
         }
         session.resume()
     }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("Preparing for segue: \(segue.identifier ?? "nil")")
+        
+        if segue.identifier == "Transition" {
+            print("Correct segue identifier.")
+            
+            if let destinationVC = segue.destination as? DetailViewController {
+                print("Destination VC casted successfully.")
+                
+                if let indexPath = tableView.indexPathForSelectedRow {
+                    print("Selected row: \(indexPath.row)")
+                    destinationVC.post = posts[indexPath.row]
+                } else {
+                    print("Error: No selected row.")
+                }
+            } else {
+                print("Error: Couldn't cast destination VC.")
+            }
+        }
+    }
+
+
 }
